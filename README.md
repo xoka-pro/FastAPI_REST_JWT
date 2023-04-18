@@ -1,48 +1,34 @@
-# FastAPI_REST_JWT
+# REST API using FastAPI and JWT tokens
 
-У цьому домашньому завданні ми продовжуємо допрацьовувати наш REST API застосунок із домашнього завдання 11.
+REST API store and manage contacts.
 
-### Завдання
-* реалізуйте механізм аутентифікації в застосунку;
-* Реалізуйте механізм авторизації за допомогою JWT токенів, щоб усі операції з контактами проводились лише зареєстрованими користувачами;
-* Користувач має доступ лише до своїх операцій з контактами;
-#### Загальні вимоги
-* При реєстрації, якщо користувач вже існує з таким email, сервер поверне помилку HTTP 409 Conflict;
-* Сервер хешує пароль і не зберігає його у відкритому вигляді в базі даних;
-* У разі успішної реєстрації користувача сервер повинен повернути HTTP статус відповіді 201 Created та дані нового користувача;
-* Для всіх операцій POST створення нового ресурсу, сервер повертає статус 201 Created;
-* При операції POST - аутентифікація користувача, сервер приймає запит із даними користувача (email, пароль) у тілі запиту;
-* Якщо користувач не існує або пароль не співпадає, повертається помилка HTTP 401 Unauthorized;
-* механізм авторизації за допомогою JWT токенів реалізований парою токенів: токена доступу access_token і токен оновлення refresh_token;
+Contacts save in PostgreSQL database and contents from:
+* Name
+* Surname
+* Email
+* Phone number
+* Birthday
+* Additional info
 
+API can do next operations:
+* Create new contact
+* Get list of all contacts
+* Get one contact by ID
+* Update existing contact
+* Delete contact
+* Search contacts by name, surname or email
+* Get list of contacts with birthday in nearest 7 days
 
-### ДЗ 12
-Мета цього домашнього завдання — створити REST API для зберігання та управління контактами. API повинен бути побудований з використанням інфраструктури FastAPI та використовувати SQLAlchemy для управління базою даних.
+Authorization and authentication:
+* Authentication in application
+* Authorization with JWT tokens
+* All operations can do only registered users
+* User can do operations only with own contacts
+* At registration if user with specified email already exist application return error HTTP 409 Conflict;
+* Application store hashed passwords in DB
+* When user successful registered app return HTTP 201 Created and user's data
+* For all POST create operations app return HTTP 201 Created
+* At POST operations - user authentication. App receive email and password in request body
+* If bad username or password receive error HTTP 401 Unauthorized
+* Authorization realized with access_token and refresh_token
 
-Контакти повинні зберігатися в базі даних та містити в собі наступну інформацію:
-* Ім'я
-* Прізвище
-* Електронна адреса
-* Номер телефону
-* День народження
-* Додаткові дані (необов'язково)
-
-API повинен мати можливість виконувати наступні дії:
-* Створити новий контакт
-* Отримати список всіх контактів
-* Отримати один контакт за ідентифікатором
-* Оновити існуючий контакт
-* Видалити контакт
-
-На придачу до базового функціоналу CRUD API також повинен мати наступні функції:
-* Контакти повинні бути доступні для пошуку за іменем, прізвищем чи адресою електронної пошти (Query).
-* API повинен мати змогу отримати список контактів з днями народження на найближчі 7 днів.
-
-### Загальні вимоги
-1. Використання фреймворку FastAPI для створення API
-2. Використання ORM SQLAlchemy для роботи з базою даних
-3. В якості бази даних слід використовувати PostgreSQL.
-4. Підтримка CRUD операцій для контактів
-5. Підтримка зберігання дати народження контакту
-6. Надання документів для API
-7. Використання модуля перевірки достовірності даних Pydantic

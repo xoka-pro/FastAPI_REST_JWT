@@ -10,7 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from src.database.db_connect import get_db
-from src.routes import contacts, auth
+from src.routes import contacts, auth, users
 
 app = FastAPI()
 
@@ -59,3 +59,4 @@ def healthchecker(db: Session = Depends(get_db)):
 
 app.include_router(contacts.router, prefix='/api')
 app.include_router(auth.router, prefix='/api')
+app.include_router(users.router, prefix='/api')

@@ -5,6 +5,7 @@ import redis.asyncio as redis
 from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -18,6 +19,15 @@ app = FastAPI()
 async def startup():
     r = await redis.Redis(host='localhost', port=6379, db=0, encoding="utf-8", decode_responses=True)
     await FastAPILimiter.init(r)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['http://127.0.0.1:8000', 'http://localhost:8000'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.middleware('http')

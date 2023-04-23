@@ -1,6 +1,10 @@
 import time
 
+import redis.asyncio as redis
+
 from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -8,6 +12,12 @@ from src.database.db_connect import get_db
 from src.routes import contacts, auth
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup():
+    r = await redis.Redis(host='localhost', port=6379, db=0, encoding="utf-8", decode_responses=True)
+    await FastAPILimiter.init(r)
 
 
 @app.middleware('http')
@@ -19,7 +29,7 @@ async def custom_middleware(request: Request, call_next):
     return response
 
 
-@app.get("/")
+@app.get("/", dependencies=[Depends(RateLimiter(times=2, seconds=5))])
 async def root():
     return {"message": "Welcome to RESTapi"}
 

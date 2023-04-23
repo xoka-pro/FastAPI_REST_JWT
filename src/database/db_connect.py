@@ -1,23 +1,12 @@
-import configparser
-import pathlib
-
 from fastapi import HTTPException, status
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 
-# URI:  postgresql://username:password@domain:port/database
-file_config = pathlib.Path(__file__).parent.parent.joinpath('conf/config.ini')
-config = configparser.ConfigParser()
-config.read(file_config)
+from src.conf.config import settings
 
-username = config.get('DB', 'USER')
-password = config.get('DB', 'PASSWORD')
-domain = config.get('DB', 'DOMAIN')
-port = config.get('DB', 'PORT')
-database = config.get('DB', 'DB_NAME')
 
-URI = f"postgresql://{username}:{password}@{domain}:{port}/{database}"
+URI = settings.sqlalchemy_database_url
 
 engine = create_engine(URI, echo=True)
 DBSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)

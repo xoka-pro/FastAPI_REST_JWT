@@ -3,7 +3,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     sqlalchemy_database_url: str = 'postgresql+psycopg2://user:password@localhost:5432/postgres'
-    = 'secret_key'
+    secret_key: str = 'secret_key'
     algorithm: str = 'HS256'
     mail_username: str = 'example@meta.ua'
     mail_password: str = 'password'
@@ -18,8 +18,8 @@ class Settings(BaseSettings):
 
 
 class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    env_file = ".env"
+    env_file_encoding = "utf-8"
 
 
 settings = Settings()
